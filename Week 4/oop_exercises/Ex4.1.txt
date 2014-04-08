@@ -1,0 +1,21 @@
+Lucas Batista Gabriel
+
+Classe: Vehicle 
+Atributos: id, fuel, distance, Driver, Truckload, freight 
+Métodos: get_id, get_fuel, get_distance, get_driver, get_truckload, get_freight
+
+Classe: Driver
+Atributos: id, nome, salary 
+Métodos: get_id, get_name, get_salary, set_salary 
+
+Classe: Client
+Atributos: id, nome, addr
+Métodos: get_id, get_nome, get_addr
+
+Classe: Truckload
+Atributos: size, material, weight
+Métodos: get/set_size, get/set_material, get/set_weight
+
+Classe: freight
+Atributos: distance, price
+Métodos: get/set_distance, get/set_distance
