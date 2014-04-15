@@ -46,21 +46,34 @@ people = [
 ]
 
 # 1) Quantas pessoas são homens?
-  puts "Numero de homens: #{people[:gender].find_all { |x| x == 'male' }}"
-# Seu código aqui...
+
+  puts "O numero de Homens eh: #{(people.find_all {|x| x[:gender] == :male}).size}"
 
 # 2) Quantas são mulheres?
 
-# Seu código aqui...
+puts "O numero de Mulheres eh: #{(people.find_all {|x| x[:gender] == :female}).size}"
+
 
 # 3) Quantas pessoas são maiores de idade?
 
-# Seu código aqui...
+puts "O numero pessoas que sao maiores de idade eh: #{(people.find_all {|x| x[:age] > 17}).size}"
 
 # 4) Qual a soma das idades de todos os brasileiros?
+cont = 0 
 
-# Seu código aqui...
+(people.find_all {|x| x[:country] == 'Brazil'}).each {|y| cont += y[:age]}
+
+puts "A soma da idade dos brasileiros eh: #{cont}"
 
 # 5) Imprima todos os nomes em ordem alfabética
+
+result = []
+i=0
+while i < people.size
+  result << people[i][:name]
+  i += 1
+end
+puts "Os nomes em ordem alfabetica sao: #{result.sort}"
+
 
 # Seu código aqui...
