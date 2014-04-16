@@ -63,10 +63,32 @@ def io_v1
   # Escreva aqui uma função que itera sobre os links retornados pela
   # função links e usa o Mechanize para baixar cada link.
   # Utilize uma nova instância do Mechanize por iteração.
+  arr = links
+  arr.each do |x|
+    m = Mechanize.new
+    m.get(x)
+  end
+
 end
 
 def io_v2
   # Versão do IO-intensive com 10 threads.
+  arr = links
+
+  threads = []
+
+  10.times do |i|
+    t = Thread.new {
+      arr[(i*20)..(i*20 + 19)].each do |x|
+        m = Mechanize.new
+        m.get(x)
+      end
+    }
+    threads << t
+  end
+
+  threads.each { |t| t.join }
+
 end
 
 def io_v3
@@ -95,7 +117,7 @@ puts "Execução dos programas 'IO-intensive' (download de arquivos):"
 puts "-------------------------------------------------------------\n\n"
 
 Benchmark.bm do |reporter|
-  reporter.report { io_v1 }
+  #reporter.report { io_v1 }
   reporter.report { io_v2 }
   reporter.report { io_v3 }
 end
@@ -105,7 +127,7 @@ puts "Execução dos programas 'CPU-intensive (cálculo de fatorial)':"
 puts "-------------------------------------------------------------\n\n"
 
 Benchmark.bm do |reporter|
-  reporter.report { cpu_v1 }
+  #reporter.report { cpu_v1 }
   reporter.report { cpu_v2 }
   reporter.report { cpu_v3 }
 end
