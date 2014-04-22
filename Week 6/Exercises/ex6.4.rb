@@ -87,25 +87,32 @@ str = <<-STR
 19:26 - [esporte] Liga nacional de basquete tem recorde de público
 STR
 
-# 1) Capturar o horário, tema, e título de cada notícia. Em seguida, para cada
-# notícia, imprimi-la com o seguinte formato: "TEMA: TÍTULO (HORA)"
+puts "\n\n1) Capturar o horário, tema, e título de cada notícia. Em seguida, para cada
+	  notícia, imprimi-la com o seguinte formato: 'TEMA: TÍTULO (HORA)'"
 
 # Seu código aqui...
+dados = str.scan(/^(\d\d:\d\d) - (\[.*\]) (.*)/)
+dados.each do |m|
+  print "\n       #{m[1]+' '+m[2]+' ('+m[0]+')'} \n"
+end
 
-# 2) Quantas linhas existem nesta string?
+puts "\n\n2) Quantas linhas existem nesta string?"
 
 # Seu código aqui...
-puts "Existem _____ linhas."
+print "\n      Existem #{str.scan(/(^)/).size()} linhas nesta string.\n\n"
 
-# 3) Quantas notícias de economia de falam sobre o dólar?
+puts "\n3) Quantas notícias de economia de falam sobre o dólar?"
 
 # Seu código aqui...
-puts "_____ notícias falam sobre o dólar."
+puts "\n      #{str.scan(/(^.* dólar.*)/).size()} notícias falam sobre o dólar."
 
-# 4) Imprimir todos os horários das notícias que contém a palavra golfe.
+puts "\n4) Imprimir todos os horários das notícias que contém a palavra golfe."
 
-# 5) Substituir todos os temas de notícias pela sua versão em maiúsculas e
-# imprimir a string resultante. Ou seja: seu código deverá imprimir o seguinte:
+puts "\n      Horarios das notícias que contém a palavra golfe:"
+puts "\n            #{str.scan(/^(\d\d:\d\d).* golfe.*/)}"
+
+puts "\n\n5) Substituir todos os temas de notícias pela sua versão em maiúsculas e
+       imprimir a string resultante. Ou seja: seu código deverá imprimir o seguinte:"
 
 # 09:55 - [POLíTICA] Prefeito da Krakosia é eleito o melhor para economia
 # 10:14 - [COTIDIANO] Cachorro salva dono de assalto
@@ -116,4 +123,8 @@ puts "_____ notícias falam sobre o dólar."
 # 16:13 - [ECONOMIA] Cotação do dólar sobe 5% em uma semana
 # 19:26 - [ESPORTE] Liga nacional de basquete tem recorde de público
 
-# Seu código aqui...
+puts "\n      Temas em com letras em maiúculo:"
+dados.each do |up|
+  print "\n       #{up[0]+' '+up[1].upcase+' '+up[2]} \n"
+end
+

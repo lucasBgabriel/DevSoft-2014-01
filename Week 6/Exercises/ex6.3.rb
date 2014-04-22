@@ -54,6 +54,7 @@ def links
     map { |link| link.href }.
     select { |path| path =~ /\A\/wiki/ }.
     map { |path| "http://en.wikipedia.org/#{path}" }
+
     links[0..200]
 
 end
@@ -63,36 +64,47 @@ def io_v1
   # Escreva aqui uma função que itera sobre os links retornados pela
   # função links e usa o Mechanize para baixar cada link.
   # Utilize uma nova instância do Mechanize por iteração.
-  arr = links
-  arr.each do |x|
+  links_ = links
+  links_.each do |link|
     m = Mechanize.new
-    m.get(x)
+    m.get(link)
   end
-
 end
 
 def io_v2
   # Versão do IO-intensive com 10 threads.
-  arr = links
-
   threads = []
-
-  10.times do |i|
-    t = Thread.new {
-      arr[(i*20)..(i*20 + 19)].each do |x|
+  links_ = links
+  links_.each_slice(links_.size/10) do |a|
+    t = Thread.new do
+      a.each do |link|    
         m = Mechanize.new
-        m.get(x)
+        m.get(link)
       end
-    }
+    end
+
     threads << t
   end
 
-  threads.each { |t| t.join }
-
+  threads.each{ |t| t.join }
 end
 
 def io_v3
   # Versão do IO-intensive com 100 threads.
+  threads = []
+  links_ = links
+  links_.each_slice(links_.size/100) do |a|
+    t = Thread.new do
+      a.each do |link|    
+        m = Mechanize.new
+        m.get(link)
+      end
+    end
+
+    threads << t
+  end
+
+  threads.each{ |t| t.join }
 end
 
 def sum(n)
@@ -103,21 +115,42 @@ def cpu_v1
   # Versão sequencial do programa CPU-intensive.
   # Escreva uma função que chama a função sum(n) para todos os inteiros
   # entre 0 e 100.
+  100.times{ |n| sum n }
 end
 
 def cpu_v2
   # Versão do CPU-intensive com 10 threads.
+  threads = []
+  100.times.each_slice(10) do |a|
+    t = Thread.new {
+      a.each { |x| sum x }
+    }
+
+    threads << t
+  end
+
+  threads.each{ |t| t.join }
 end
 
 def cpu_v3
   # Versão do CPU-intensive com 100 threads.
+  threads = []
+  100.times.each_slice(1) do |a|
+    t = Thread.new {
+      a.each { |x| sum x }
+    }
+
+    threads << t
+  end
+
+  threads.each{ |t| t.join }
 end
 
 puts "Execução dos programas 'IO-intensive' (download de arquivos):"
 puts "-------------------------------------------------------------\n\n"
 
 Benchmark.bm do |reporter|
-  #reporter.report { io_v1 }
+  reporter.report { io_v1 }
   reporter.report { io_v2 }
   reporter.report { io_v3 }
 end
@@ -127,7 +160,7 @@ puts "Execução dos programas 'CPU-intensive (cálculo de fatorial)':"
 puts "-------------------------------------------------------------\n\n"
 
 Benchmark.bm do |reporter|
-  #reporter.report { cpu_v1 }
+  reporter.report { cpu_v1 }
   reporter.report { cpu_v2 }
   reporter.report { cpu_v3 }
 end
