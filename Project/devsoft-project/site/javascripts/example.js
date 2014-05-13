@@ -91,7 +91,7 @@ $(function graphPie() {
             }]
         });
     });
-$(function () {
+$(function graphColumm() {
         $('#graphColumm').highcharts({
             chart: {
                 type: 'column'

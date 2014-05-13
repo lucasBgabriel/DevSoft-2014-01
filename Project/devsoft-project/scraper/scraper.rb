@@ -80,12 +80,8 @@ selectors = []
   selectors << '#ContentPlaceHolder1_lblDataValidade'
   selectors << '#ContentPlaceHolder1_lblNumeroVagas'
 
-  my_hash = [] 
-
-  JSON.parse('{
-  "hello": "noes"
-  }')
-
+  my_hash = { items: [] }
+  
   emBranco = 0
   totalVagas = 0
 
@@ -98,43 +94,44 @@ selectors = []
   if(doc.css(selectors[8]).text == "")
     emBranco += 1
   else
-    my_hash << JSON.parse(['{ 
-      "Habilitacao":'+ doc.css(selectors[0]).text.to_s + ',
+    item = {
+      "Habilitacao" => doc.css(selectors[0]).text.to_s,
 
-      "Titulo":'+ doc.css(selectors[1]).text.to_s + ',
+      "Titulo" => doc.css(selectors[1]).text.to_s,
+
+      "Empresa" => doc.css(selectors[2]).text.to_s,
       
-      "Empresa": '+ doc.css(selectors[2]).text.to_s + ',
-      
-      "Area": '+ doc.css(selectors[3]).text.to_s + ',
-      
-      "Descricao": '+ doc.css(selectors[4]).text.to_s + ',
-      
-      "Requisitos": '+ doc.css(selectors[5]).text.to_s + ',
-      
-      "Beneficios": '+ doc.css(selectors[6]).text.to_s + ',
-      
-      "Contatos": '+ doc.css(selectors[7]).text.to_s + ',
-      
-      "DataAnuncio": '+ doc.css(selectors[8]).text.to_s + ',
-      
-      "DataValidade": '+ doc.css(selectors[9]).text.to_s + ',
-      
-      "NumeroVagas": '+ doc.css(selectors[10]).text.to_s + '
-      }'].to_json).first
+      "Descricao" => doc.css(selectors[4]).text.to_s,
+
+      "Requisitos" => doc.css(selectors[5]).text.to_s,
+
+      "Beneficios" => doc.css(selectors[6]).text.to_s,
+
+      "Contatos" => doc.css(selectors[7]).text.to_s,
+
+      "DataAnuncio" => doc.css(selectors[8]).text.to_s,
+
+      "DataValidade" => doc.css(selectors[9]).text.to_s,
+
+      "NumeroVagas" => doc.css(selectors[10]).text.to_s
+    }
+    my_hash[:items] << item
   end
-
   totalVagas += 1
 end
 
-my_hash << JSON.parse(['{
-  "Total de Vagas":'+ totalVagas.to_s + ',
-  "Vagas em Branco":'+ emBranco.to_s + '
-  }'].to_json).first
+my_hash[:totalVagas] = totalVagas.to_s
+my_hash[:emBranco] = emBranco.to_s
+
+# my_hash << JSON.parse(['{
+#   "Total de Vagas":'+ totalVagas.to_s + ',
+#   "Vagas em Branco":'+ emBranco.to_s + '
+#   }'].to_json).first
 
 puts totalVagas
 puts emBranco
 
-save_json('teste', my_hash.to_json)
+save_json('teste', JSON.pretty_generate(my_hash))
 
 
 
