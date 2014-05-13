@@ -25,6 +25,11 @@ header h2 {
   font-size: 340px;
 }
 
+#abaSelecionada{
+  background-color: #D5D5D5;
+}
+
+
 .welcome {
   color: rgba(223, 32, 78, 1);
   font-family: 'Open Sans', 'sans-serif';
